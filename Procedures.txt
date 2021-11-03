@@ -1,0 +1,122 @@
+1. procedure get_all:
+
+mysql> DELIMITER //
+mysql> create procedure get_all()
+    -> begin
+    -> select * from employee;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delimiter ;
+mysql> CALL get_all();
++------+--------+-------------+------+
+| id   | name   | email       | age  |
++------+--------+-------------+------+
+|    1 | Mark   | m@gmail.com |   15 |
+|    2 | Paul   | p@gmail.com |   20 |
+|    3 | Watson | w@gmail.com |   25 |
++------+--------+-------------+------+
+3 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+2. procedure get_by_id(IN var1 INTEGER):
+
+mysql> DELIMITER //
+mysql> create procedure get_all(IN var1 INTEGER)
+    -> begin
+    -> select * from employee WHERE id = var1;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CALL get_by_id(2);
++------+------+-------------+------+
+| id   | name | email       | age  |
++------+------+-------------+------+
+|    2 | Paul | p@gmail.com |   20 |
++------+------+-------------+------+
+1 row in set (0.00 sec)
+
+3. procedure update_age(IN var1 INTEGER, IN var2 INTEGER):
+
+mysql> create procedure update_age(IN var1 INTEGER, IN var2 INTEGER)
+    -> BEGIN
+    -> update employee set age = var2 where id = var1;
+    -> END
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CALL update_age(1,45);
+    -> //
+Query OK, 1 row affected (0.00 sec)
+
+mysql> CALL get_all();
+    -> //
++------+--------+-------------+------+
+| id   | name   | email       | age  |
++------+--------+-------------+------+
+|    1 | Mark   | m@gmail.com |   45 |
+|    2 | Paul   | p@gmail.com |   20 |
+|    3 | Watson | w@gmail.com |   25 |
++------+--------+-------------+------+
+3 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+4. procedure insert(IN var1 CHAR(50), IN var2 CHAR(50), IN var3 INTEGER):
+
+mysql> DELIMITER //
+mysql> create procedure insert_to_employee(IN var1 CHAR(50), IN var2 CHAR(50), IN var3 INTEGER)
+    -> BEGIN
+    -> insert into employee (name, email, age) values (var1, var2, var3);
+    -> END
+    -> //
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> CALL insert_to_employee('James', 'j@gmail.com', 30);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CALL get_all();
+    -> //
++------+--------+-------------+------+
+| id   | name   | email       | age  |
++------+--------+-------------+------+
+|    1 | Mark   | m@gmail.com |   45 |
+|    2 | Paul   | p@gmail.com |   20 |
+|    3 | Watson | w@gmail.com |   25 |
+|    4 | James  | j@gmail.com |   30 |
++------+--------+-------------+------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+5. procedure delete_record(IN var1 INTEGER):
+
+mysql> DELIMITER //
+mysql> create procedure delete_record(IN var1 INTEGER)
+    -> BEGIN
+    -> delete from employee where id = var1;
+    -> END
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CALL delete_record(3);
+    -> //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CALL get_all();
+    -> //
++----+-------+-------------+------+
+| id | name  | email       | age  |
++----+-------+-------------+------+
+|  1 | Mark  | m@gmail.com |   45 |
+|  2 | Paul  | p@gmail.com |   20 |
+|  4 | James | j@gmail.com |   30 |
++----+-------+-------------+------+
+3 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
